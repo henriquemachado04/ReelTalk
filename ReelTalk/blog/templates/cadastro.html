@@ -9,7 +9,6 @@
     <form method="POST" action="/cadastro" novalidate>
         {{ formulario.hidden_tag() }}
     
-        <!-- Campo Nome -->
         <div class="mb-3">
             <label for="nome" class="form-label">{{ formulario.nome.label }}</label>
             {{ formulario.nome(class="form-control", id="nome") }}
@@ -24,7 +23,6 @@
             {% endif %}
         </div>
 
-        <!-- Campo Nome do Usuário -->
         <div class="mb-3">
             <label for="nome_usuario" class="form-label">{{ formulario.nome_usuario.label }}</label>
             {{ formulario.nome_usuario(class="form-control", id="nome_usuario") }}
@@ -39,7 +37,6 @@
             {% endif %}
         </div>
     
-        <!-- Campo Senha -->
         <div class="mb-3">
             <label for="senha" class="form-label">{{ formulario.senha.label }}</label>
             {{ formulario.senha(class="form-control", id="senha") }}
@@ -54,7 +51,6 @@
             {% endif %}
         </div>
     
-        <!-- Campo Email -->
         <div class="mb-3">
             <label for="email" class="form-label">{{ formulario.email.label }}</label>
             {{ formulario.email(class="form-control", id="email") }}
@@ -69,7 +65,6 @@
             {% endif %}
         </div>
     
-        <!-- Campo Data de Nascimento (Niver) -->
         <div class="mb-3">
             <label for="niver" class="form-label">{{ formulario.niver.label }}</label>
             {{ formulario.niver(class="form-control", id="niver") }}
@@ -84,7 +79,6 @@
             {% endif %}
         </div>
     
-        <!-- Botão Enviar -->
         <div class="mt-4">
             {{ formulario.enviar(class="btn btn-primary") }}
         </div>
