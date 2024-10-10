@@ -40,5 +40,23 @@ class ContatoForm(FlaskForm):
             DataRequired(message="O campo de idade é obrigatório.")
         ]
     )
-    
+        
     enviar = SubmitField('Enviar')
+    
+class PostagemForm(FlaskForm):
+    titulo = StringField(
+        "Título",
+        validators=[DataRequired(message="O campo título é obrigatório")]
+    )
+    review = StringField(
+        "Review",
+        validators=[
+            DataRequired(message="O campo review é obrigatório"),
+            Length(min=15, message="O review deve ter pelo menos 15 caracteres.")
+        ]
+    )
+    nota = IntegerField(
+        "Nota",
+        validators=[DataRequired(message="O campo nota é obrigatório"),
+                    NumberRange(min=0, max=5, message="A nota deve ser entre 0 e 5.")]
+    )

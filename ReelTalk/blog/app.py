@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import ContatoForm
+from forms import ContatoForm, PostagemForm
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -98,7 +98,7 @@ def login():
             session['eh_administrador'] = user.eh_administrador
             flash('Login realizado com sucesso!', 'success')
             return redirect(url_for('index'))
-        flash('Falha no login. Verifique seu email e senha.', 'danger')
+        flash('Falha no login. Verifique seu email ou senha.', 'danger')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -114,10 +114,11 @@ def index():
 
 @app.route('/criar_postagem', methods=['GET', 'POST'])
 def criar_postagem():
-    if request.method == 'POST':
-        titulo = request.form['titulo']
-        review = request.form['review']
-        nota = request.form['nota']
+    form = PostagemForm()  # Utilizando o formulário correto
+    if form.validate_on_submit():
+        titulo = form.titulo.data
+        review = form.review.data
+        nota = form.nota.data
         usuario_id = session.get('usuario_id')
 
         nova_postagem = Postagem(titulo=titulo, review=review, nota=nota, usuario_id=usuario_id)
@@ -127,7 +128,7 @@ def criar_postagem():
         flash('Postagem criada com sucesso!', 'success')
         return redirect(url_for('index'))
 
-    return render_template('criar_postagem.html')
+    return render_template('criar_postagem.html', form=form)
 
 @app.route('/postagem/<int:postagem_id>', methods=['GET', 'POST'])
 def detalhe_postagem(postagem_id):
@@ -174,6 +175,27 @@ def excluir_comentario(comentario_id):
         flash('Você não tem permissão para excluir este comentário.', 'danger')
 
     return redirect(url_for('detalhe_postagem', postagem_id=comentario.postagem_id))
+
+@app.route('/editar_postagem/<int:postagem_id>', methods=['GET', 'POST'])
+def editar_postagem(postagem_id):
+    postagem = Postagem.query.get(postagem_id)
+    usuario_id = session.get('usuario_id')
+
+    # Verifica se a postagem existe e se o usuário tem permissão para editá-la
+    if postagem is None or (postagem.usuario_id != usuario_id and not session.get('eh_administrador')):
+        flash('Você não tem permissão para editar esta postagem.', 'danger')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        postagem.titulo = request.form['titulo']
+        postagem.review = request.form['review']
+        postagem.nota = request.form['nota']
+        db.session.commit()
+
+        flash('Postagem editada com sucesso!', 'success')
+        return redirect(url_for('detalhe_postagem', postagem_id=postagem.id))
+
+    return render_template('editar_postagem.html', postagem=postagem)
 
 if __name__ == '__main__':
     with app.app_context():

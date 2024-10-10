@@ -39,7 +39,7 @@
     
         <div class="mb-3">
             <label for="senha" class="form-label">{{ formulario.senha.label }}</label>
-            {{ formulario.senha(class="form-control", id="senha") }}
+            {{ formulario.senha(class="form-control", id="senha", type="password") }}
             {% if formulario.senha.errors %}
                 <div class="invalid-feedback d-block">
                     <ul class="mb-0">
