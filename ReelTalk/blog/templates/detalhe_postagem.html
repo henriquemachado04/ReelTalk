@@ -9,7 +9,7 @@
     <p>{{ postagem['review'] }}</p>
     <p>Nota: {{ postagem['nota'] }}</p>
     {% if postagem['usuario_id'] == session['usuario_id'] or session['eh_administrador'] %}
-        <a href="{{ url_for('excluir_postagem', postagem_id=postagem['id']) }}">Excluir postagem</a>
+        <a href="{{ url_for('excluir_postagem', postagem_id=postagem['id']) }}">Excluir</a>
     {% endif %}
     
     <h2>Comentários</h2>

@@ -19,7 +19,7 @@ class Usuario(db.Model):
     senha = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     niver = db.Column(db.String(10))
-    eh_administrador = db.Column(db.Boolean, default=False)
+    eh_administrador = db.Column(db.Boolean, default=True)
     postagens = db.relationship("Postagem", back_populates="usuario")
     comentarios = db.relationship("Comentario", back_populates="usuario")
 
